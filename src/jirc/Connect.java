@@ -23,13 +23,15 @@ import jerklib.listeners.IRCEventListener;
  */
 public class Connect implements IRCEventListener {
     private ConnectionManager manager;
+    private String username="thepasto";
+    private String password="aerosmith";
 
 	public Connect()
 	{
 		/*
 		 * ConnectionManager takes a Profile to use for new connections.
 		 */
-		manager = new ConnectionManager(new Profile("thepasto"));
+		manager = new ConnectionManager(new Profile(username,username,username+"_",username+"__"));
 
 		/*
 		 * One instance of ConnectionManager can connect to many IRC networks.
@@ -59,7 +61,11 @@ public class Connect implements IRCEventListener {
 
 		if (e.getType() == Type.CONNECT_COMPLETE)
 		{
-			e.getSession().join("#fived");
+                    //ConnectionCompleteEvent cce = (ConnectionCompleteEvent) e;
+                    if (!password.equals("")){
+                       e.getSession().sayRaw("/msg NickServ identify "+password);
+                    }
+			//e.getSession().join("#fived");
 		}
 		else if (e.getType() == Type.CHANNEL_MESSAGE)
 		{
@@ -71,7 +77,7 @@ public class Connect implements IRCEventListener {
 		{
 			JoinCompleteEvent jce = (JoinCompleteEvent) e;
 			/* say hello */
-			jce.getChannel().say("Ciao :D");
+			//jce.getChannel().say("Ciao :D");
 		}
 		else
 		{
